@@ -1,0 +1,127 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <form class="form" #registerForm="ngForm" (ngSubmit)="registerForm.form.valid && onSubmit()" novalidate>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-7">
+                  <label>Email</label>
+                  <input type="text" class="form-control required" [(ngModel)]="userModal.email" name="email"
+                    #email="ngModel" required email pattern="^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,5}$" autocomplete="new-email">
+                  <span class="text-danger" *ngIf="(email.touched || registerForm.submitted) && email.errors?.required">
+                    Email is required
+                  </span>
+                  <span class="text-danger" *ngIf="email.touched && email.errors?.email && email.errors?.pattern">
+                    Enter a valid email address
+                  </span>
+                </div>
+                <div class="col-md-5">
+                  <label>Student Group</label>
+                  <select class="custom-select required" [(ngModel)]="userModal.studentGroup" name="studentGroup"
+                    required>
+                    <option value="" disabled>Choose student group</option>
+                    <option *ngFor="let stgrup of studentGroup" [ngValue]="stgrup">{{stgrup}}</option>
+                  </select>
+                  <span class="text-danger" *ngIf="(!userModal.studentGroup && registerForm.submitted)">
+                    Please select one student group
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class=" form-group">
+              <div class="row">
+                <div class="col-md-7">
+                  <label>Name</label>
+                  <input type="text" class="form-control required" [(ngModel)]="userModal.name" name="name" #name="ngModel"
+                    required (ngModelChange)="userModal.name = $event.toUpperCase()" autocomplete="new-name">
+                  <span class="text-danger" *ngIf="(name.touched || registerForm.submitted) && name.errors?.required">
+                    Name is required
+                  </span>
+                </div>
+                <div class="col-md-5">
+                  <label>Password</label>
+                  <input type="password" class="form-control required" [(ngModel)]="userModal.password" name="password"
+                    #password="ngModel" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$" required autocomplete="new-password">
+                  <span class="text-danger"
+                    *ngIf="(password.touched || registerForm.submitted) && password.errors?.required">
+                    Password is required
+                  </span>
+                  <span class="text-danger" *ngIf="password.touched && registerForm.submitted && password.errors?.pattern">
+                    Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase
+                    letter and 1 number
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Address</label>
+              <textarea class="form-control" name="address" [(ngModel)]="userModal.address" maxlength="50"></textarea>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-7">
+
+                  <label>Phone</label>
+                  <input type="text" class="form-control required" name="phone" [(ngModel)]="userModal.phone"
+                    minlength="10" maxlength="10" #phone="ngModel" (keypress)="preventExceptNumbers($event)" required
+                    pattern="^(0|91)?[7-9][0-9]{9}$" autocomplete="new-phone">
+                  <span class="text-danger" *ngIf="(phone.touched || registerForm.submitted) && phone.errors?.required">
+                    Phone number is required
+                  </span>
+                  <span class="text-danger" *ngIf="phone.touched && phone.errors?.pattern && registerForm.submitted">
+                    Phone number must have 10 digits
+                  </span>
+                </div>
+                <div class="col-md-5">
+
+                  <label>Guardian Phone</label>
+                  <input type="text" (keypress)="preventExceptNumbers($event)" class="form-control" name="gurdianPhone"
+                    minlength="10" maxlength="10" [(ngModel)]="userModal.gurdianPhone" #gurdianPhone="ngModel"
+                    pattern="^(0|91)?[7-9][0-9]{9}$" autocomplete="new-gphone">
+                  <span class="text-danger"
+                    *ngIf="userModal.gurdianPhone && gurdianPhone.touched && gurdianPhone.errors?.pattern && registerForm.submitted">
+                    Phone number must have 10 digits
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-7">
+                  <label>Enrollment Number</label>
+                  <input type="text" class="form-control" name="enrollmentNo" [(ngModel)]="userModal.enrollmentNo"
+                    minlength="12" maxlength="12" #enrollmentNo="ngModel" pattern="^([0-9]){12}$">
+                  <span class="text-danger"
+                    *ngIf="userModal.enrollmentNo && enrollmentNo.touched && enrollmentNo.errors?.pattern && registerForm.submitted">
+                    Enrollment number should be 12 digit number
+                  </span>
+                </div>
+                <div class="col-md-5">
+                  <label>Status</label>
+                  <select class="custom-select" [(ngModel)]="userModal.status" name="status">
+                    <option *ngFor="let status of status" [ngValue]="status">{{status}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Upload photo</label>
+              <div class="avatar-upload">
+                <div class="avatar-edit">
+                  <input type='file' class="form-control" id="imageUpload" name="photo" [(ngModel)]="userModal.photo"
+                    accept=".png, .jpg, .jpeg" #fileInput (change)="uploadFile($event)"/>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Save</button>
+              <button type="button" class="btn btn-secondary ml-2" (click)="registerForm.resetForm()">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
